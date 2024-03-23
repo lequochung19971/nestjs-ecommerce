@@ -1,0 +1,42 @@
+{
+  "version": "0.2.0",
+  "resolveSourceMapLocations": [
+    "${workspaceFolder}/**",
+    "!**/node_modules/**"
+  ],
+  "configurations": [
+    {
+      "name": "web",
+      "type": "node",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": [
+        "--filter",
+        "web",
+        "run",
+        "dev",
+      ],
+      "outputCapture": "std",
+      "internalConsoleOptions": "openOnSessionStart",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/apps/web/"
+    },
+    {
+      "name": "server",
+      "type": "node",
+      "runtimeExecutable": "pnpm",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "runtimeArgs": [
+        "--filter",
+        "server",
+        "run",
+        "dev:watch",
+      ],
+      "outputCapture": "std",
+      "internalConsoleOptions": "openOnSessionStart",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/apps/server/"
+    },
+  ],
+}
