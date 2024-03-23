@@ -6,17 +6,11 @@ import { BaseFieldOption } from './base-field-option.interface';
 
 interface IFieldOptions extends BaseFieldOption {}
 
-export function DateField(
-  options: Omit<ApiPropertyOptions, 'type'> & IFieldOptions = {},
-): PropertyDecorator {
+export function DateField(options: Omit<ApiPropertyOptions, 'type'> & IFieldOptions = {}): PropertyDecorator {
   const decorators = [Type(() => Date), IsDate()];
 
   if (options.optional) {
-    decorators.push(
-      typeof options.optional === 'boolean'
-        ? IsOptional()
-        : IsOptional(options.optional),
-    );
+    decorators.push(typeof options.optional === 'boolean' ? IsOptional() : IsOptional(options.optional));
   }
 
   return applyDecorators(...decorators);

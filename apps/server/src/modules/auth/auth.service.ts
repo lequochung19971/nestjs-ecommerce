@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -49,10 +45,7 @@ export class AuthService {
     await queryRunner.startTransaction();
 
     try {
-      const hashedRefreshToken = await bcrypt.hash(
-        refreshToken.token,
-        SALT_ROUND,
-      );
+      const hashedRefreshToken = await bcrypt.hash(refreshToken.token, SALT_ROUND);
       const refreshTokenEntity = this.refreshTokensRepository.create({
         id: uuid,
         hashedToken: hashedRefreshToken,
@@ -95,10 +88,7 @@ export class AuthService {
     }
   }
 
-  async getMatchedRefreshTokenUser(
-    refreshTokenPayload: IDecodedRefreshTokenPayload,
-    refreshToken: string,
-  ) {
+  async getMatchedRefreshTokenUser(refreshTokenPayload: IDecodedRefreshTokenPayload, refreshToken: string) {
     const user = await this.userRepository.findOneBy({
       id: refreshTokenPayload.userId,
     });
@@ -111,10 +101,7 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const isMatched = await bcrypt.compare(
-      refreshToken,
-      refreshTokenEntity.hashedToken,
-    );
+    const isMatched = await bcrypt.compare(refreshToken, refreshTokenEntity.hashedToken);
     if (!isMatched) {
       throw new BadRequestException('Unmatched');
     }
@@ -123,9 +110,7 @@ export class AuthService {
   }
 
   async generateAccessTokenInfo(payload: { userId: string }) {
-    const expiresIn = +this.configService.get<string>(
-      'ACCESS_TOKEN_EXPIRATION_TIME',
-    );
+    const expiresIn = +this.configService.get<string>('ACCESS_TOKEN_EXPIRATION_TIME');
     return new TokenDto({
       expiresIn,
       token: await this.jwtService.signAsync(payload, {
@@ -136,9 +121,7 @@ export class AuthService {
   }
 
   async generateRefreshTokenInfo(payload: IDecodedRefreshTokenPayload) {
-    const expiresIn = +this.configService.get<string>(
-      'REFRESH_TOKEN_EXPIRATION_TIME',
-    );
+    const expiresIn = +this.configService.get<string>('REFRESH_TOKEN_EXPIRATION_TIME');
     return new TokenDto({
       expiresIn,
       token: await this.jwtService.signAsync(payload, {

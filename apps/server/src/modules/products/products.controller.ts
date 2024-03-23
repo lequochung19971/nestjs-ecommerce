@@ -54,10 +54,7 @@ export class ProductsController {
     summary: 'Partial Update product',
   })
   @Patch(':id')
-  updateProduct(
-    @Param('id') id: string,
-    @Body() updateProductDto: UpdateProductDto,
-  ) {
+  updateProduct(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.productsService.updateProduct(id, updateProductDto);
   }
 

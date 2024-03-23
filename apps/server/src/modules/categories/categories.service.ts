@@ -39,10 +39,7 @@ export class CategoriesService {
       .leftJoinAndSelect('category.media', 'file');
 
     if (params.search?.columns?.length && params.search?.value) {
-      queryBuilder = queryBuilder.search(
-        params.search.columns,
-        params.search.value,
-      );
+      queryBuilder = queryBuilder.search(params.search.columns, params.search.value);
     }
 
     let totalCount: number;
@@ -81,8 +78,7 @@ export class CategoriesService {
     }
 
     if (includedChildren) {
-      const descendantsTree =
-        await this.categoryRepository.findDescendantsTree(categoryEntity);
+      const descendantsTree = await this.categoryRepository.findDescendantsTree(categoryEntity);
       categoryEntity.children = descendantsTree.children;
     }
 

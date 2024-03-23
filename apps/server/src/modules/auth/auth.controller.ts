@@ -32,10 +32,7 @@ export class AuthController {
     summary: 'Sign In',
   })
   @Post('sign-in')
-  async signIn(
-    @Body() body: SignInRequestDto,
-    @Res({ passthrough: true }) response: Response,
-  ) {
+  async signIn(@Body() body: SignInRequestDto, @Res({ passthrough: true }) response: Response) {
     const result = await this.authService.signIn(body);
     response.cookie('accessToken', `Bearer ${result.accessToken.token}`, {
       httpOnly: true,
@@ -67,13 +64,9 @@ export class AuthController {
     if (!refreshToken) {
       throw new BadRequestException('There is no refreshToken');
     }
-    const refreshTokenPayload: IDecodedRefreshTokenPayload =
-      this.jwtService.decode(refreshToken.split(' ')[1]);
+    const refreshTokenPayload: IDecodedRefreshTokenPayload = this.jwtService.decode(refreshToken.split(' ')[1]);
 
-    await this.authService.signOut(
-      refreshTokenPayload.userId,
-      refreshTokenPayload.id,
-    );
+    await this.authService.signOut(refreshTokenPayload.userId, refreshTokenPayload.id);
   }
 
   @ApiOperation({

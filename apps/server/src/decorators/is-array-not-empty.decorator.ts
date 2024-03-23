@@ -19,8 +19,6 @@ export class IsNotArrayEmptyValidator implements ValidatorConstraintInterface {
   }
 }
 
-export function IsNotArrayEmpty(
-  options = {} as ValidationOptions,
-): PropertyDecorator {
+export function IsNotArrayEmpty(options = {} as ValidationOptions): PropertyDecorator {
   return applyDecorators(Validate(IsNotArrayEmptyValidator, options));
 }

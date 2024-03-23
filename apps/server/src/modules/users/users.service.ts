@@ -29,10 +29,7 @@ export class UsersService {
       throw new ConflictException(`This user is existed`);
     }
 
-    const hashedPassword = await bcrypt.hash(
-      createUserDto.password,
-      SALT_ROUND,
-    );
+    const hashedPassword = await bcrypt.hash(createUserDto.password, SALT_ROUND);
 
     const user = this.userRepository.create({
       ...createUserDto,
@@ -51,10 +48,7 @@ export class UsersService {
     }
 
     if (params.search?.columns?.length && params.search?.value) {
-      queryBuilder = queryBuilder.search(
-        params.search.columns,
-        params.search.value,
-      );
+      queryBuilder = queryBuilder.search(params.search.columns, params.search.value);
     }
 
     const users = await queryBuilder

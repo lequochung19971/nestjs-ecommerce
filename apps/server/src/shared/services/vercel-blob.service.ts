@@ -13,14 +13,7 @@ export class VercelBlobService {
 
   put(
     pathname: string,
-    body:
-      | string
-      | Readable
-      | Blob
-      | ArrayBuffer
-      | FormData
-      | ReadableStream<any>
-      | File,
+    body: string | Readable | Blob | ArrayBuffer | FormData | ReadableStream<any> | File,
     options = {} as PutCommandOptions,
   ) {
     return put(pathname, body, {
@@ -29,10 +22,7 @@ export class VercelBlobService {
     });
   }
 
-  delete(
-    url: Parameters<typeof del>[0],
-    options = {} as Parameters<typeof del>[1],
-  ) {
+  delete(url: Parameters<typeof del>[0], options = {} as Parameters<typeof del>[1]) {
     return del(url, {
       ...options,
       token: this.token,

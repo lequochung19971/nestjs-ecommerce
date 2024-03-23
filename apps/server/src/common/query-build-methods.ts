@@ -23,10 +23,7 @@ SelectQueryBuilder.prototype.search = function search<Entity>(
     return result;
   }, '');
 
-  return this.where(
-    `to_tsvector(${searchColumnsString}) @@ to_tsquery(:searchValue)`,
-    {
-      searchValue: `${value}:*`,
-    },
-  );
+  return this.where(`to_tsvector(${searchColumnsString}) @@ to_tsquery(:searchValue)`, {
+    searchValue: `${value}:*`,
+  });
 };

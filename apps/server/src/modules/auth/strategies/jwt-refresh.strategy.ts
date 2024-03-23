@@ -14,10 +14,7 @@ function extractJWTRefreshTokenFromCookie(req: Request): string | null {
 }
 
 @Injectable()
-export class JwtRefreshStrategy extends PassportStrategy(
-  Strategy,
-  'jwt-refresh',
-) {
+export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
   constructor(
     private readonly authService: AuthService,
     private readonly configService: ConfigService,

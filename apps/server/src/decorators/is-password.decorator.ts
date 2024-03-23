@@ -3,9 +3,7 @@ import { Matches, ValidationOptions } from 'class-validator';
 
 const passwordRegEx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
 
-export function IsPassword(
-  options = {} as ValidationOptions,
-): PropertyDecorator {
+export function IsPassword(options = {} as ValidationOptions): PropertyDecorator {
   return applyDecorators(
     Matches(passwordRegEx, {
       message: `Password must contain Minimum 8 and maximum 20 characters, 

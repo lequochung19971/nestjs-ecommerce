@@ -45,10 +45,7 @@ export class OrdersService {
       const orderDetailEntity = queryRunner.manager.create(OrderDetail, {
         user: currentUser,
       });
-      const savedOrderItemEntities = await queryRunner.manager.save(
-        OrderItem,
-        orderItemEntities,
-      );
+      const savedOrderItemEntities = await queryRunner.manager.save(OrderItem, orderItemEntities);
 
       orderDetailEntity.orderItems = savedOrderItemEntities;
       await queryRunner.manager.save(OrderDetail, orderDetailEntity);
@@ -70,10 +67,7 @@ export class OrdersService {
       .leftJoinAndSelect('product.media', 'file');
 
     if (params.search?.columns?.length && params.search?.value) {
-      queryBuilder = queryBuilder.search(
-        params.search.columns,
-        params.search.value,
-      );
+      queryBuilder = queryBuilder.search(params.search.columns, params.search.value);
     }
 
     let totalCount: number;
@@ -101,15 +95,12 @@ export class OrdersService {
     const queryRunner = this.dataSource.createQueryRunner();
     queryRunner.startTransaction();
     try {
-      const currentOrderDetail = await queryRunner.manager.findOne(
-        OrderDetail,
-        {
-          where: { id: orderDetailId },
-          relations: {
-            orderItems: true,
-          },
+      const currentOrderDetail = await queryRunner.manager.findOne(OrderDetail, {
+        where: { id: orderDetailId },
+        relations: {
+          orderItems: true,
         },
-      );
+      });
 
       if (!currentOrderDetail) {
         throw new OrderDetailNotFound();
@@ -129,18 +120,10 @@ export class OrdersService {
        */
       const filteredResult = (newOrderItemEntities ?? [])?.reduce(
         (result, orderItemEntity) => {
-          const exitedItemEntity = currentOrderDetail.orderItems?.find(
-            (i) => i.id === orderItemEntity.id,
-          );
+          const exitedItemEntity = currentOrderDetail.orderItems?.find((i) => i.id === orderItemEntity.id);
 
           if (exitedItemEntity) {
-            result.updatedItems.push(
-              queryRunner.manager.merge(
-                OrderItem,
-                orderItemEntity,
-                exitedItemEntity,
-              ),
-            );
+            result.updatedItems.push(queryRunner.manager.merge(OrderItem, orderItemEntity, exitedItemEntity));
           } else {
             result.newItems.push(orderItemEntity);
           }
@@ -159,28 +142,21 @@ export class OrdersService {
        */
       const deletedItems = currentOrderDetail.orderItems.filter(
         (currentOrderItem) =>
-          !newOrderItemEntities.find(
-            (noi) => noi.product.id === currentOrderItem.product.id,
-          ) || currentOrderItem.quantity <= 0,
+          !newOrderItemEntities.find((noi) => noi.product.id === currentOrderItem.product.id) ||
+          currentOrderItem.quantity <= 0,
       );
 
       /**
        * Save New Order Items
        */
-      const savedNewOrderItems = await queryRunner.manager.save(
-        OrderItem,
-        newItems,
-      );
+      const savedNewOrderItems = await queryRunner.manager.save(OrderItem, newItems);
 
       /**
        * Soft Delete Order Items
        */
       queryRunner.manager.softDelete(OrderItem, deletedItems);
 
-      currentOrderDetail.orderItems = [
-        ...savedNewOrderItems,
-        ...updatedItems,
-      ].filter((i) => i.quantity > 0);
+      currentOrderDetail.orderItems = [...savedNewOrderItems, ...updatedItems].filter((i) => i.quantity > 0);
       await queryRunner.manager.save(OrderDetail, currentOrderDetail);
 
       await queryRunner.commitTransaction();

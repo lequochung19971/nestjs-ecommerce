@@ -1,13 +1,5 @@
 import { Type } from 'class-transformer';
-import {
-  IsBoolean,
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsString,
-  Max,
-  Min,
-} from 'class-validator';
+import { IsBoolean, IsEnum, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
 import { Order } from 'src/enums/order.enum';
 import { NumberField } from 'src/decorators/fields/number-field.decorator';
 import { ObjectTypeField } from 'src/decorators/fields/object-type-field.decorator';

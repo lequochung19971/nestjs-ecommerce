@@ -22,10 +22,7 @@ export class ShoppingCartsService {
     const queryRunner = this.dataSource.createQueryRunner();
     queryRunner.startTransaction();
     try {
-      const shoppingCartEntity = await this.createOrGetShoppingCartByUserId(
-        queryRunner,
-        userId,
-      );
+      const shoppingCartEntity = await this.createOrGetShoppingCartByUserId(queryRunner, userId);
 
       // Create Cart Item Entities
       const newCartItemEntities = queryRunner.manager.create(
@@ -50,13 +47,9 @@ export class ShoppingCartsService {
       // Merge new information for Added Cart Items
       const filteredResult = newCartItemEntities.reduce(
         (result, item) => {
-          const existedItem = newCartItemEntities.find(
-            (c) => c.product.id === item.product.id,
-          );
+          const existedItem = newCartItemEntities.find((c) => c.product.id === item.product.id);
           if (existedItem) {
-            result.updatedItems.push(
-              queryRunner.manager.merge(CartItem, item, existedItem),
-            );
+            result.updatedItems.push(queryRunner.manager.merge(CartItem, item, existedItem));
           } else {
             result.newItems.push(item);
           }
@@ -69,19 +62,12 @@ export class ShoppingCartsService {
       );
       const { newItems, updatedItems } = filteredResult;
 
-      const savedNewCartItems = await queryRunner.manager.save(
-        CartItem,
-        newItems,
-      );
+      const savedNewCartItems = await queryRunner.manager.save(CartItem, newItems);
 
-      const validCartItems = [...savedNewCartItems, ...updatedItems].filter(
-        (c) => c.quantity > 0,
-      );
+      const validCartItems = [...savedNewCartItems, ...updatedItems].filter((c) => c.quantity > 0);
 
       const deletedCartItem = existedCartItems.filter(
-        (item) =>
-          !newCartItemEntities.find((i) => i.id === item.id) ||
-          item.quantity <= 0,
+        (item) => !newCartItemEntities.find((i) => i.id === item.id) || item.quantity <= 0,
       );
 
       /**
@@ -139,10 +125,7 @@ export class ShoppingCartsService {
     return shoppingCart.toDto(ShoppingCartDto);
   }
 
-  private async createOrGetShoppingCartByUserId(
-    queryRunner: QueryRunner,
-    userId: string,
-  ) {
+  private async createOrGetShoppingCartByUserId(queryRunner: QueryRunner, userId: string) {
     const currentUser = await this.userRepository.findOne({
       where: { id: userId },
       relations: {

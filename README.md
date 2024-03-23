@@ -7,7 +7,7 @@ This Turborepo includes the following packages/apps:
 ### Apps and Packages
 
 - `server`: a [Nest.js](https://nestjs.com/) server
-- `web`: another [Next.js](https://nextjs.org/) app
+- `web`: a [Next.js](https://nextjs.org/) app
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 

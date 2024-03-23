@@ -26,8 +26,6 @@ export class ShoppingCartsController {
   })
   @Get()
   getShoppingCart(@Req() req: Request) {
-    return this.shoppingCartsService.getShoppingCart(
-      req.user?.shoppingSession?.id,
-    );
+    return this.shoppingCartsService.getShoppingCart(req.user?.shoppingSession?.id);
   }
 }

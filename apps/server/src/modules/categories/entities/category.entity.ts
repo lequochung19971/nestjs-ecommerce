@@ -1,15 +1,7 @@
 import { BaseEntity } from 'src/entities/base.entity';
 import { File } from 'src/modules/files/entities/file.entity';
 import { Product } from 'src/modules/products/entities/product.entity';
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  Tree,
-  TreeChildren,
-  TreeParent,
-} from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, Tree, TreeChildren, TreeParent } from 'typeorm';
 
 @Entity()
 @Tree('closure-table')

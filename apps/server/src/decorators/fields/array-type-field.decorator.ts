@@ -1,10 +1,5 @@
 import { ApiPropertyOptions } from '@nestjs/swagger';
-import {
-  IsArray,
-  IsOptional,
-  ValidateNested,
-  ValidationOptions,
-} from 'class-validator';
+import { IsArray, IsOptional, ValidateNested, ValidationOptions } from 'class-validator';
 import { Type, TypeHelpOptions } from 'class-transformer';
 import { applyDecorators } from '@nestjs/common';
 import { BaseFieldOption } from './base-field-option.interface';
@@ -24,11 +19,7 @@ export function ArrayTypeField(
   const decorators = [IsArray(), Type(typeFunction), ValidateNested()];
 
   if (options.optional) {
-    decorators.push(
-      typeof options.optional === 'boolean'
-        ? IsOptional()
-        : IsOptional(options.optional),
-    );
+    decorators.push(typeof options.optional === 'boolean' ? IsOptional() : IsOptional(options.optional));
   }
 
   if (options.notEmpty) {

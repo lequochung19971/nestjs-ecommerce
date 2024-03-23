@@ -40,10 +40,7 @@ export class ProductsService {
       .leftJoinAndSelect('product.categories', 'category');
 
     if (params.search?.columns?.length && params.search?.value) {
-      queryBuilder = queryBuilder.search(
-        params.search.columns,
-        params.search.value,
-      );
+      queryBuilder = queryBuilder.search(params.search.columns, params.search.value);
     }
 
     let totalCount: number;

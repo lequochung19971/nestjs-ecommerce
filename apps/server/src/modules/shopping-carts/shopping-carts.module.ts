@@ -7,11 +7,6 @@ import { UserRepository } from '../users/user.repository';
 
 @Module({
   controllers: [ShoppingCartsController],
-  providers: [
-    ShoppingCartsService,
-    ShoppingCartRepository,
-    CartItemRepository,
-    UserRepository,
-  ],
+  providers: [ShoppingCartsService, ShoppingCartRepository, CartItemRepository, UserRepository],
 })
 export class ShoppingCartsModule {}

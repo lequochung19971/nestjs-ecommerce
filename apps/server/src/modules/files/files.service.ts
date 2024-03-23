@@ -59,10 +59,7 @@ export class FilesService {
     }
 
     if (queryParams.search?.columns?.length && queryParams.search?.value) {
-      queryBuilder = queryBuilder.search(
-        queryParams.search.columns,
-        queryParams.search.value,
-      );
+      queryBuilder = queryBuilder.search(queryParams.search.columns, queryParams.search.value);
     }
 
     const users = await queryBuilder
@@ -87,10 +84,7 @@ export class FilesService {
 
     await this.fileRepository.delete(id);
 
-    const url = this.generateUniqueFileUrl(
-      fileEntity.name.replace(`.${fileEntity.extension}`, ''),
-      fileEntity.id,
-    );
+    const url = this.generateUniqueFileUrl(fileEntity.name.replace(`.${fileEntity.extension}`, ''), fileEntity.id);
 
     await this.vercelBlobService.delete(url);
   }
@@ -102,10 +96,7 @@ export class FilesService {
   private async convertToWebp(file: Express.Multer.File) {
     const fileExtension = this.getFileExtension(file.originalname);
 
-    const webpFileName = file.originalname.replace(
-      `.${fileExtension}`,
-      `.webp`,
-    );
+    const webpFileName = file.originalname.replace(`.${fileExtension}`, `.webp`);
 
     const webp = sharp(file.buffer).webp({
       quality: 20,
